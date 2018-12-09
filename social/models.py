@@ -2,9 +2,6 @@ from django.db import models
 from django.utils import timezone
 
 
-# TODO: As classes 'TipoAlgumaCoisa' poderiam ser trocadas por só um atributo na classe né? (tipo a classe Reacao)
-
-
 # Create your models here.
 class Usuario(models.Model):
     TIPOS = (
@@ -21,8 +18,13 @@ class Usuario(models.Model):
 
 
 class Anexo(models.Model):
+    TIPOS = (
+        ('I', 'imagem'),
+        ('P', 'pdf'),
+    )
+
     arquivo = models.FileField(upload_to='static')
-    tipo = models.CharField(max_length=30)
+    tipo = models.CharField(max_length=30, choices=TIPOS)
 
 
 class Questao(models.Model):
@@ -38,6 +40,9 @@ class Alternativa(models.Model):
 
 class Comentario(models.Model):
     texto_comentario = models.TextField()
+    data = models.DateField(default=timezone.now)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='usuario')
+    postagem = models.ForeignKey('Postagem', on_delete=models.CASCADE, related_name='postagem')
 
 
 class Reacao(models.Model):
@@ -47,8 +52,7 @@ class Reacao(models.Model):
     )
 
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    postage = models.ForeignKey(Questao, on_delete=models.CASCADE)
-    data_reacao = models.DateField(default=timezone.now)
+    postagem = models.ForeignKey('Postagem', on_delete=models.CASCADE)
     tipo_reacao = models.CharField(max_length=30, choices=TIPOS)
 
 
@@ -61,7 +65,7 @@ class Mensagem(models.Model):
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=30)
-    usuario = models.ManyToManyField(Usuario,related_name='usuarios')
+    usuario = models.ManyToManyField(Usuario, related_name='usuarios')
 
 
 class Postagem(models.Model):
