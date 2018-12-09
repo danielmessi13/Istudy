@@ -7,36 +7,22 @@ from django.utils import timezone
 
 # Create your models here.
 class Usuario(models.Model):
-    nome = models.CharField(max_length=30)
-    email = models.CharField(max_length=40)
-    tipo_usuario = models.ForeignKey('TipoUsuario', on_delete=models.CASCADE, related_name='tipo')
-
-    def __str__(self):
-        return self.nome
-
-
-class TipoUsuario(models.Model):
     TIPOS = (
         ('A', 'Aluno'),
         ('M', 'Mentor'),
     )
 
+    nome = models.CharField(max_length=30)
+    email = models.CharField(max_length=40)
     tipo = models.CharField(max_length=10, choices=TIPOS)
 
     def __str__(self):
-        return self.tipo
+        return self.nome
 
 
 class Anexo(models.Model):
     arquivo = models.FileField(upload_to='static')
-    tipo_anexo = models.OneToOneField('TipoAnexo', on_delete=models.CASCADE, related_name='tipo')
-
-
-class TipoAnexo(models.Model):
     tipo = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.tipo
 
 
 class Questao(models.Model):
@@ -61,7 +47,7 @@ class Reacao(models.Model):
     )
 
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
+    postage = models.ForeignKey(Questao, on_delete=models.CASCADE)
     data_reacao = models.DateField(default=timezone.now)
     tipo_reacao = models.CharField(max_length=30, choices=TIPOS)
 
@@ -69,3 +55,16 @@ class Reacao(models.Model):
 class Mensagem(models.Model):
     emissor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='emissor')
     receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='receptor')
+    texto_mensagem = models.TextField()
+    lida = models.BooleanField(default=False)
+
+
+class Grupo(models.Model):
+    titulo = models.CharField(max_length=30)
+    usuario = models.ManyToManyField(Usuario,related_name='usuarios')
+
+
+class Postagem(models.Model):
+    texto = models.TextField()
+    data = models.DateField(timezone.now)
+    usuario = models.ForeignKey(Usuario, related_name='postagens', on_delete=models.CASCADE)
