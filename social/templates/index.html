@@ -1,0 +1,79 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block body%}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Postar</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <textarea class="form-control input-lg p-text-area" rows="2"
+                                      placeholder="O que você tem em mente hoje?"></textarea>
+                        </form>
+                        <div class="box-footer box-form">
+                            <button type="button" class="btn btn-success pull-right">Postar</button>
+                            <ul class="nav nav-pills">
+                                <li><a href="#"><i class="fa fa-file-pdf"></i></a></li>
+                                <li><a href="#"><i class="fa fa-camera"></i></a></li>
+                                <li><a href="#"><i class=" fa fa-film"></i></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                      <div class="user-block">
+                        <img class="img-circle" src="{% static 'img/user.png' %}" alt="">
+                        <span class="username"><a href="#">Marcelo Alves</a></span>
+                        <span class="description">{{descicao}}</span>
+                      </div>
+                    </div>
+                    <div class="box-body">
+                        <p>{{legenda}}</p>
+                        <img class="img-responsive show-in-modal" src="http://libra.ifpi.edu.br/noticias/ifpi-abre-20-vagas-para-mestrado-em-engenharia-de-materiais/mestrado/@@images/af61e0e8-55fa-4095-ae15-4d0c61870662.png" alt="Photo">
+                      <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Compartilhar</button>
+                      <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Gostei</button>
+                      <span class="pull-right text-muted"></span>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default friends">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Meus Amigos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                        <a class="btn btn-primary" href="#">Visualizar todos</a>
+                    </div>
+                </div>
+                <div class="panel panel-default groups">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Grupos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="group-item">
+                            <img src="{% static 'img/group.png' %}" alt="">
+                            <h4><a href="#" class="">IFPI</a></h4>
+                            <p>Grupo de atividades</p>
+                        </div>
+                        <div class="clearfix"></div>
+                        <a href="#" class="btn btn-primary">Visualizar todos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

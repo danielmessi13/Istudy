@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Istudy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/timeline.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+  </head>
+
+  <body>
+
+  <header>
+    <div class="container">
+      <img src="{% static 'img/logo.png' %}" class="logo" alt="">
+      <form class="form-inline">
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputEmail3">Email</label>
+          <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Digite sua senha">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputPassword3">Senha</label>
+          <input type="senha" class="form-control" id="exampleInputPassword3" placeholder="Senha">
+        </div>
+        <button type="submit" class="btn btn-default">Entrar</button><br>
+      </form>
+    </div>
+  </header>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""style="max-height: 25px; max-width: 25px;"></a></li>
+            <li><a href="#">Timeline</a></li>
+            <li><a href="#">Perfil</a></li>
+            <li><a href="#">Grupos</a></li>
+            <li><a href="#">Cursos</a></li>
+            <li><a href="#">Amigos</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    {% block body%}
+
+   {% endblock%}
+
+    <footer>
+      <div class="container">
+        <p>Istudy Copyright &copy, 2018</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+  </body>
+</html>
