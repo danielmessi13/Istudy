@@ -78,6 +78,18 @@ def postar(request):
 
 
 def grupos(request):
+    if request.method == "POST":
+        form = BuscaGrupoForm(request.POST)
+        print('entroiu')
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.save()
+            titulo = request.POST['titulo']
+            if titulo:
+                print(titulo)
+
+        else:
+            print(form.errors)
 
     return render(request,'grupos.html', {"usuario": usuario_logado(request)})
 

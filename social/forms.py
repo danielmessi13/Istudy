@@ -27,3 +27,11 @@ class AnexoForm(forms.ModelForm):
         widgets = {
             'arquivo': forms.FileInput(attrs={ 'class': "form-control"}),
         }
+
+class BuscaGrupoForm(forms.ModelForm):
+    class Meta:
+        model = Grupo
+        fields = ["titulo"]
+        widgets = {
+            'titulo': forms.TextInput(attrs={ 'class': "form-control"})
+        }
