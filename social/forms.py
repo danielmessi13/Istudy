@@ -3,7 +3,7 @@ from .models import *
 class CadastroForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = "__all__"
+        fields = ['nome','email','tipo','senha']
         widgets = {
             'nome': forms.TextInput(attrs={ 'class': "form-control"}),
             'email': forms.TextInput(attrs={ 'class': "form-control"}),

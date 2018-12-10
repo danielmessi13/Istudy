@@ -11,11 +11,11 @@
                         <h3 class="panel-title">Postar</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="{% url 'postar' %}" method="post">
+                        <form action="{% url 'postar' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <textarea name="texto" class="form-control input-lg p-text-area" rows="2"
                                       placeholder="O que você tem em mente hoje?"></textarea>
-                            <input name="tipo_anexo" id="tipo_anexo" value="0">
+                            <input name="tipo" type="hidden" id="tipo_anexo" value="False">
                             <div class="modal fade" id="anexo" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
@@ -24,7 +24,25 @@
                                             <h4 class="modal-title" id="myModalLabel">Anexar PDF</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="file" name="file" class="form-control">
+                                            <input type="file" name="pdf" class="form-control">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="imagem" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Anexar Imagem</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="file" name="imagem" class="form-control">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar
@@ -37,11 +55,11 @@
                             <div class="box-footer box-form">
                                 <button type="submit" class="btn btn-success pull-right">Postar</button>
                                 <ul class="nav nav-pills">
-                                    <li><a href="#" onclick="setTipo(1)" data-toggle="modal" data-target="#anexo"><i
+                                    <li><a href="#" onclick="setTipo('P')" data-toggle="modal" data-target="#anexo"><i
                                             class="fa fa-file-pdf"></i></a>
                                     </li>
-                                    <li><a href="#" onclick="setTipo(2)"><i class="fa fa-camera"></i></a></li>
-                                    <li><a href="#" onclick="setTipo(3)"><i class=" fa fa-question"></i></a></li>
+                                    <li><a href="#" onclick="setTipo('I')" data-toggle="modal" data-target="#imagem"><i class="fa fa-camera"></i></a></li>
+                                    <li><a href="#"><i class=" fa fa-question"></i></a></li>
                                 </ul>
                             </div>
                         </form>
@@ -59,9 +77,18 @@
                     </div>
                     <div class="box-body">
                         <p>{{postagem.texto}}</p>
+                        {% if postagem.anexo_postagem %}
+                        {% for anexo in postagem.anexo_postagem.all %}
+                        {% if anexo.tipo == 'P' %}
+                        <p><a target="_blank" href="media/{{anexo.arquivo}}"><i class="fa fa-file-pdf"></i> Anexo</a></p>
+                        {% elif anexo.tipo == 'I'%}
                         <img class="img-responsive show-in-modal"
-                             src="http://libra.ifpi.edu.br/noticias/ifpi-abre-20-vagas-para-mestrado-em-engenharia-de-materiais/mestrado/@@images/af61e0e8-55fa-4095-ae15-4d0c61870662.png"
+                             src="media/{{anexo.arquivo}}"
                              alt="Photo">
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Compartilhar
                         </button>
                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Gostei

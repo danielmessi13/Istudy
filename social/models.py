@@ -26,7 +26,7 @@ class Anexo(models.Model):
         ('P', 'pdf'),
     )
 
-    arquivo = models.FileField(upload_to='static')
+    arquivo = models.FileField(upload_to='anexos')
     tipo = models.CharField(max_length=30, choices=TIPOS)
     postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True, blank=True)
 
@@ -74,7 +74,7 @@ class Grupo(models.Model):
 
 class Postagem(models.Model):
     texto = models.TextField()
-    data = models.DateField(timezone.now)
+    data = models.DateField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
     questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
 

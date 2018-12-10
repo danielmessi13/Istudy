@@ -56,6 +56,19 @@ def postar(request):
             model_instance = form.save(commit=False)
             model_instance.usuario = usuario_logado(request)
             model_instance.save()
+            tipo = request.POST['tipo']
+            if tipo:
+                if tipo == 'P':
+                    request.FILES['arquivo'] = request.FILES['pdf']
+                elif tipo == 'I':
+                    request.FILES['arquivo'] = request.FILES['imagem']
+                anexo = AnexoForm(request.POST, request.FILES)
+                if anexo.is_valid():
+                    anexo_instance = anexo.save(commit=False)
+                    anexo_instance.postagem = model_instance
+                    anexo_instance.save()
+                else:
+                    print(anexo.errors)
         else:
             print(form.errors)
     return redirect('home_logado')
