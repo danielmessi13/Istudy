@@ -13,6 +13,7 @@ class Usuario(models.Model):
     email = models.CharField(max_length=40)
     senha = models.CharField(max_length=50)
     tipo = models.CharField(max_length=10, choices=TIPOS)
+    foto = models.ImageField(null=True)
 
     def __str__(self):
         return self.nome
@@ -74,3 +75,4 @@ class Postagem(models.Model):
     data = models.DateField(timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
     anexo = models.ForeignKey(Anexo, related_name='anexo_postagem', on_delete=models.CASCADE, null=True)
+    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True)
