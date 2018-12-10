@@ -11,7 +11,7 @@ class Usuario(models.Model):
 
     nome = models.CharField(max_length=30)
     email = models.CharField(max_length=40)
-    senha =  models.CharField(max_length=50)
+    senha = models.CharField(max_length=50)
     tipo = models.CharField(max_length=10, choices=TIPOS)
 
     def __str__(self):
@@ -42,8 +42,8 @@ class Alternativa(models.Model):
 class Comentario(models.Model):
     texto_comentario = models.TextField()
     data = models.DateField(default=timezone.now)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='usuario')
-    postagem = models.ForeignKey('Postagem', on_delete=models.CASCADE, related_name='postagem')
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='usuario_comentario')
+    postagem = models.ForeignKey('Postagem', on_delete=models.CASCADE, related_name='postagem_comentario')
 
 
 class Reacao(models.Model):
@@ -66,10 +66,11 @@ class Mensagem(models.Model):
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=30)
-    usuario = models.ManyToManyField(Usuario, related_name='usuarios')
+    usuario = models.ManyToManyField(Usuario, related_name='grupo_usuario')
 
 
 class Postagem(models.Model):
     texto = models.TextField()
     data = models.DateField(timezone.now)
-    usuario = models.ForeignKey(Usuario, related_name='postagens', on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
+    anexo = models.ForeignKey(Anexo, related_name='anexo_postagem', on_delete=models.CASCADE, null=True)
