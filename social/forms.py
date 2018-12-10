@@ -10,3 +10,13 @@ class CadastroForm(forms.ModelForm):
             'tipo': forms.Select(attrs={ 'class': "form-control"}),
             'senha': forms.PasswordInput(attrs={ 'class': "form-control"})
         }
+
+class PostagemForm(forms.ModelForm):
+    class Meta:
+        model = Postagem
+        fields = ["texto","questao","anexo"]
+        widgets = {
+            'texto': forms.TextInput(attrs={ 'class': "form-control"}),
+            'questao': forms.TextInput(attrs={ 'class': "form-control"}),
+            'anexo': forms.FileInput(attrs={ 'class': "form-control"})
+        }

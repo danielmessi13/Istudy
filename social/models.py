@@ -72,7 +72,7 @@ class Grupo(models.Model):
 
 class Postagem(models.Model):
     texto = models.TextField()
-    data = models.DateField(timezone.now)
+    data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
-    anexo = models.ForeignKey(Anexo, related_name='anexo_postagem', on_delete=models.CASCADE, null=True)
-    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True)
+    anexo = models.ForeignKey(Anexo, related_name='anexo_postagem', on_delete=models.CASCADE, null=True, blank=True)
+    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
