@@ -14,7 +14,7 @@ class Usuario(models.Model):
     senha = models.CharField(max_length=50)
     tipo = models.CharField(max_length=10, choices=TIPOS)
     foto = models.ImageField(null=True)
-    amigos = models.ManyToManyField('Usuario')
+    amigos = models.ManyToManyField('Usuario',related_name='amigos_usuario')
 
     def __str__(self):
         return self.nome
@@ -69,20 +69,28 @@ class Mensagem(models.Model):
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=30)
-    usuario = models.ManyToManyField(Usuario, related_name='grupo_usuario')
+    usuarios = models.ManyToManyField(Usuario, related_name='grupo_usuario')
+    imagem = models.ImageField(default='group.png')
 
+    def __str__(self):
+        return self.titulo
 
 class Postagem(models.Model):
     texto = models.TextField()
-    data = models.DateField(default=timezone.now)
+    data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
     questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
+
+
+    class Meta:
+        ordering = ['data']
+
 
 class Convite(models.Model):
     convidado = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='convites_recebidos')
     solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='convites_feitos')
 
     def aceitar(self):
-        self.convidado.contatos.add(self.solicitante)
-        self.solicitante.contatos.add(self.convidado)
+        self.convidado.amigos.add(self.solicitante)
+        self.solicitante.amigos.add(self.convidado)
         self.delete()

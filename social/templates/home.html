@@ -58,7 +58,8 @@
                                     <li><a href="#" onclick="setTipo('P')" data-toggle="modal" data-target="#anexo"><i
                                             class="fa fa-file-pdf"></i></a>
                                     </li>
-                                    <li><a href="#" onclick="setTipo('I')" data-toggle="modal" data-target="#imagem"><i class="fa fa-camera"></i></a></li>
+                                    <li><a href="#" onclick="setTipo('I')" data-toggle="modal" data-target="#imagem"><i
+                                            class="fa fa-camera"></i></a></li>
                                     <li><a href="#"><i class=" fa fa-question"></i></a></li>
                                 </ul>
                             </div>
@@ -80,7 +81,8 @@
                         {% if postagem.anexo_postagem %}
                         {% for anexo in postagem.anexo_postagem.all %}
                         {% if anexo.tipo == 'P' %}
-                        <p><a target="_blank" href="media/{{anexo.arquivo}}"><i class="fa fa-file-pdf"></i> Anexo</a></p>
+                        <p><a target="_blank" href="media/{{anexo.arquivo}}"><i class="fa fa-file-pdf"></i> Anexo</a>
+                        </p>
                         {% elif anexo.tipo == 'I'%}
                         <img class="img-responsive show-in-modal"
                              src="media/{{anexo.arquivo}}"
@@ -101,16 +103,24 @@
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default friends">
+
                     <div class="panel-heading">
                         <h3 class="panel-title">Meus Amigos</h3>
                     </div>
                     <div class="panel-body">
+                        {% if usuario.amigos_usuario.count %}
+                        {% for amigo in usuario.amigos_usuario.all %}
                         <ul>
                             <li><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""></a>
                             </li>
                         </ul>
+                        {% endfor %}
                         <div class="clearfix"></div>
                         <a class="btn btn-primary" href="#">Visualizar todos</a>
+                        {% else %}
+                        <h3 style="margin-top: 0px">Você não tem amigos!</h3>
+                        <a href="#" class="btn btn-primary">Procurar amigos</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="panel panel-default groups">
@@ -118,13 +128,21 @@
                         <h3 class="panel-title">Grupos</h3>
                     </div>
                     <div class="panel-body">
+                        {% if usuario.grupo_usuario.count %}
+                        {% for grupo in usuario.grupo_usuario.all %}
                         <div class="group-item">
                             <img src="{% static 'img/group.png' %}" alt="">
-                            <h4><a href="#" class="">IFPI</a></h4>
+                            <h4><a href="#" class="">{{ grupo.titulo }} </a></h4>
                             <p>Grupo de atividades</p>
                         </div>
+
+                        {% endfor %}
                         <div class="clearfix"></div>
                         <a href="{% url 'grupos' %}" class="btn btn-primary">Visualizar todos</a>
+                        {% else %}
+                        <h3 style="margin-top: 0px">Você não está em grupos!</h3>
+                        <a href="#" class="btn btn-primary">Procurar grupos</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -136,6 +154,13 @@
     function setTipo(tipo) {
         $('#tipo_anexo').val(tipo)
     }
+
+
+
+
+
+
+
 </script>
 {% endblock %}
 

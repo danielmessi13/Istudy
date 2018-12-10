@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+
 from .forms import *
 
 
@@ -10,6 +12,7 @@ def index(request):
         if form.is_valid():
             model_instance = form.save(commit=False)
             model_instance.save()
+            messages.success(request, 'Conta criada com sucesso')
             return redirect('home')
     else:
         form = CadastroForm()
@@ -75,7 +78,15 @@ def postar(request):
 
 
 def grupos(request):
-    return redirect('home')
+
+    return render(request,'grupos.html', {"usuario": usuario_logado(request)})
+
+def sair_grupo(request,id):
+
+    usuario = usuario_logado(request)
+    usuario.grupo_usuario.remove(Grupo.objects.get(id=id))
+    return redirect('home_logado')
+
 
 def check_logado(request):
     if request.session.get('usuario_logado'):
