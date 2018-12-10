@@ -22,7 +22,11 @@ def index(request):
 
 
 def home(request):
-    return render(request, 'home.html')
+
+    context = {
+        "usuario": usuario_logado(request)
+    }
+    return render(request, 'home.html', context)
 
 
 def login(request):
@@ -57,8 +61,8 @@ def postar(request):
     return redirect('home_logado')
 
 
-def anexar(request):
-    return redirect('home_logado')
+def grupos(request):
+    return redirect('home')
 
 def check_logado(request):
     if request.session.get('usuario_logado'):

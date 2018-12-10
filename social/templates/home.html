@@ -47,16 +47,18 @@
                         </form>
                     </div>
                 </div>
+                {% if usuario.usuario_postagem %}
+                {% for postagem in usuario.usuario_postagem.all %}
                 <div class="box box-widget">
                     <div class="box-header with-border">
                         <div class="user-block">
                             <img class="img-circle" src="{% static 'img/user.png' %}" alt="">
-                            <span class="username"><a href="#">Marcelo Alves</a></span>
-                            <span class="description">{{descicao}}</span>
+                            <span class="username"><a href="#">{{postagem.usuario.nome}}</a></span>
+                            <span class="description">{{postagem.data}}</span>
                         </div>
                     </div>
                     <div class="box-body">
-                        <p>{{legenda}}</p>
+                        <p>{{postagem.texto}}</p>
                         <img class="img-responsive show-in-modal"
                              src="http://libra.ifpi.edu.br/noticias/ifpi-abre-20-vagas-para-mestrado-em-engenharia-de-materiais/mestrado/@@images/af61e0e8-55fa-4095-ae15-4d0c61870662.png"
                              alt="Photo">
@@ -67,6 +69,8 @@
                         <span class="pull-right text-muted"></span>
                     </div>
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default friends">

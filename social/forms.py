@@ -14,9 +14,16 @@ class CadastroForm(forms.ModelForm):
 class PostagemForm(forms.ModelForm):
     class Meta:
         model = Postagem
-        fields = ["texto","questao","anexo"]
+        fields = ["texto","questao"]
         widgets = {
             'texto': forms.TextInput(attrs={ 'class': "form-control"}),
             'questao': forms.TextInput(attrs={ 'class': "form-control"}),
-            'anexo': forms.FileInput(attrs={ 'class': "form-control"})
+        }
+
+class AnexoForm(forms.ModelForm):
+    class Meta:
+        model = Anexo
+        fields = ["arquivo","tipo"]
+        widgets = {
+            'arquivo': forms.FileInput(attrs={ 'class': "form-control"}),
         }
