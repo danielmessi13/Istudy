@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout', logout, name='logout'),
     path('home', home, name='home_logado'),
     path('postar', postar, name='postar'),
- ]
+    path('grupos', grupos, name='grupos'),
+]
