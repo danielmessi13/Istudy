@@ -12,6 +12,27 @@ header{
 
 .navbar-brand{
 	margin: 0px;
+	transform: translateY(-30px);
+}
+.navbar-nav li a:hover{
+	background: transparent !important;
+}
+
+.navbar-nav li a:active{
+	background: #227f73 !important;
+}
+
+.navbar-nav li a:focus{
+	background: #227f73 !important;
+}
+.dropdown-menu{
+	background-image: linear-gradient(#26A69A, #27a498 10%, #227f73);
+	color: #fff !important;
+}
+
+
+.navbar-nav li a{
+	color: white;
 }
 
 footer{
