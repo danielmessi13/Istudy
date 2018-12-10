@@ -45,6 +45,6 @@ def logout(request):
 
 
 def check_logado(request):
-    if request.session['usuario_logado']:
+    if request.session.get('usuario_logado'):
         return True
     return False
