@@ -83,6 +83,6 @@ class Convite(models.Model):
     solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='convites_feitos')
 
     def aceitar(self):
-        self.convidado.contatos.add(self.solicitante)
-        self.solicitante.contatos.add(self.convidado)
+        self.convidado.amigos.add(self.solicitante)
+        self.solicitante.amigos.add(self.convidado)
         self.delete()

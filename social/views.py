@@ -44,7 +44,6 @@ def logout(request):
     return redirect('home')
 
 
-
 def postar(request):
     if request.method == "POST":
         form = PostagemForm(request.POST)
@@ -60,11 +59,17 @@ def postar(request):
 def anexar(request):
     return redirect('home_logado')
 
+
 def check_logado(request):
     if request.session.get('usuario_logado'):
         return True
     return False
 
+
 def usuario_logado(request):
-     usuario = request.session.get('usuario_logado')
-     return Usuario.objects.get(id=usuario["id"])
+    usuario = request.session.get('usuario_logado')
+    return Usuario.objects.get(id=usuario["id"])
+
+
+def grupos(request):
+    return render(request,'grupos',)
