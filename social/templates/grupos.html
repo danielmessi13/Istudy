@@ -4,8 +4,67 @@
 {% block body%}
 <section>
     <div class="container">
+        {% if busca %}
+        <a href="{% url 'grupos' %}"><button class="btn btn-info pull-right">Voltar</button></a>
+        <h2>Resultados:</h2>
+        <h2> Nenhum resultado! </h2>
+        {% if busca_sair.count %}
+        {% for grupo in busca_sair.all %}
+        <div class="panel panel-body">
+            <div class="pane-header with-border">
+                <div class="user-block">
+                    <img class="img-thumbnail" src="{% static 'img/group.png' %}" alt="">
+                    <span class="username"><a href="#">{{grupo.titulo}}</a></span>
+                    <a href="{% url 'sair_grupo' grupo.id %}" class="btn btn-danger pull-right ">Sair</a><span
+                        class=""></span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if busca_entrar.count %}
+        {% for grupo in busca_entrar.all %}
+        <div class="panel panel-body">
+        <div class="pane-header with-border">
+        <div class="user-block">
+        <img class="img-thumbnail" src="{% static 'img/group.png' %}" alt="">
+        <span class="username"><a href="#">{{grupo.titulo}}</a></span>
+        <a href="{% url 'entrar_grupo' grupo.id %}" class="btn btn-primary pull-right">Entrar</a><span
+        class=""></span>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% else %}
         <div class="row">
-            <h1>Lista de grupos:</h1>
+            <form action="{% url 'grupos' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal fade" id="titulo" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Buscar grupo: </h4>
+                            </div>
+                            <div class="modal-body">
+                                {% include 'form_base.html' %}
+                                <!--<input type="text" name="titulo" class="form-control">-->
+                            </div>
+                            <!--<div class="modal-footer">-->
+                            <!--<button type="submit" class="btn btn-primary" data-dismiss="modal">Pesquisar</button>-->
+                            <!--<button type="button" class="btn btn-warning" data-dismiss="modal">Fechar</button>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+
+               <a href="#" data-toggle="modal" data-target="#titulo" class="btn btn-primary btn-lg fa fa-search pull-right">Procurar
+                    grupos</a>
+
+            </form>
+
+            <h2>Lista dos seus grupos:</h2>
             {% if usuario.grupo_usuario.count %}
             {% for grupo in usuario.grupo_usuario.all %}
             <div class="panel panel-body">
@@ -19,35 +78,34 @@
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+             <h2 style=" text-align: center; color: grey;">Você não tem grupos :(</h2>
+            {% endif %}
+
+            <h2>Lista de grupos:</h2>
+            {% if grupos.count %}
+            {% for grupo in grupos %}
+            <div class="panel panel-body">
+                <div class="pane-header with-border">
+                    <div class="user-block">
+                        <img class="img-thumbnail" src="{% static 'img/group.png' %}" alt="">
+                        <span class="username"><a href="#">{{grupo.titulo}}</a></span>
+                        <a href="{% url 'entrar_grupo' grupo.id %}" class="btn btn-primary pull-right ">Entrar</a><span
+                            class=""></span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h2 style=" text-align: center; color: grey" class="border">Você já está em todos os grupos existentes! :)</h2>
+            {% endif %}
+
             {% endif %}
 
 
-            <form action="{% url 'grupos' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="modal fade" id="titulo" tabindex="-1" role="dialog"
-                     aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Buscar grupo: </h4>
-                            </div>
-                            <div class="modal-body">
-                                <input type="text" name="titulo" class="form-control">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" data-dismiss="modal">Pesquisar</button>
-                                <button type="button" class="btn btn-warning" data-dismiss="modal">Fechar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="#" data-toggle="modal" data-target="#titulo" class="btn btn-primary btn-lg btn-block fa fa-search">Procurar
-                    grupos</a>
 
 
-            </form>
+
         </div>
     </div>
 </section>

@@ -83,7 +83,7 @@ class Postagem(models.Model):
 
 
     class Meta:
-        ordering = ['data']
+        ordering = ['-data']
 
 
 class Convite(models.Model):

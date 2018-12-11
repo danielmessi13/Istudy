@@ -141,7 +141,32 @@
                         <a href="{% url 'grupos' %}" class="btn btn-primary">Visualizar todos</a>
                         {% else %}
                         <h3 style="margin-top: 0px">Você não está em grupos!</h3>
-                        <a href="#" class="btn btn-primary">Procurar grupos</a>
+                        <form action="{% url 'grupos' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="modal fade" id="titulo" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Buscar grupo: </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% include 'form_base.html' %}
+                                            <!--<input type="text" name="titulo" class="form-control">-->
+                                        </div>
+                                        <!--<div class="modal-footer">-->
+                                        <!--<button type="submit" class="btn btn-primary" data-dismiss="modal">Pesquisar</button>-->
+                                        <!--<button type="button" class="btn btn-warning" data-dismiss="modal">Fechar</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#titulo"
+                               class="btn btn-primary fa fa-search"> Procurar
+                                grupos</a>
+
+                        </form>
                         {% endif %}
                     </div>
                 </div>
@@ -154,6 +179,8 @@
     function setTipo(tipo) {
         $('#tipo_anexo').val(tipo)
     }
+
+
 
 
 

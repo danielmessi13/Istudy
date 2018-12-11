@@ -11,7 +11,8 @@ urlpatterns = [
     path('home', home, name='home_logado'),
     path('postar', postar, name='postar'),
     path('grupos', grupos, name='grupos'),
-    path('sair_grupo/<int:id>', sair_grupo, name='sair_grupo')
+    path('sair_grupo/<int:id>', sair_grupo, name='sair_grupo'),
+    path('entrar_grupo/<int:id>', entrar_grupo, name='entrar_grupo'),
 ]
 
 if settings.DEBUG:
