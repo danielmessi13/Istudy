@@ -59,11 +59,6 @@ def postar(request):
             print(form.errors)
     return redirect('home_logado')
 
-
-def grupos(request):
-    return redirect('home')
-
-
 def check_logado(request):
     if request.session.get('usuario_logado'):
         return True
@@ -76,4 +71,4 @@ def usuario_logado(request):
 
 
 def grupos(request):
-    return render(request,'grupos',)
+    return render(request,'grupos',{'grupos': Grupo.objects.all()})
