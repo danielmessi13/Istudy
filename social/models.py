@@ -76,8 +76,7 @@ class Postagem(models.Model):
     texto = models.TextField()
     data = models.DateField(timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
-    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True,
-                                   blank=True)
+    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Convite(models.Model):
