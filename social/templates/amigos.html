@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block body%}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Convites</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            {% if convites %}
+                                {% for convite in convites %}
+                                    <li class="list-group-item">{{convite.solicitante.nome}} <a href="{% url 'aceitar' convite.id %}" class="badge badge-primary badge-pill">Aceitar</a></li>
+
+                                {% endfor %}
+                            {% else %}
+                            <h3>Não há convites :(</h3>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                 <div class="panel-heading">
+                        <h3 class="panel-title">Amigos</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            {% if amigos %}
+                                {% for amigo in amigos %}
+                                    <li class="list-group-item">{{amigo.nome}}</li>
+                                {% endfor %}
+                            {% else %}
+                            <h3>Você não tem amigos :(</h3>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                {%include 'inc/widget-amigo.html' %}
+                <!--{%include 'inc/widget-grupo.html' %}-->
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+

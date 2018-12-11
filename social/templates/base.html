@@ -39,12 +39,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 {% if request.session.usuario_logado %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Timeline</a></li>
-                    <li><a href="#">Perfil</a></li>
-                    <li><a href="#">Grupos</a></li>
+                    <li><a href="{% url 'home_logado' %}">Timeline</a></li>
+                    <li><a href="{% url 'grupos' %}">Grupos</a></li>
                     <li><a href="#">Cursos</a></li>
-                    <li><a href="#">Amigos</a></li>
-                    <li><a href="#">Link</a></li>
+                    <li><a href="{% url 'convites' %}">Amigos</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Minha Conta <span class="caret"></span></a>
@@ -74,6 +72,26 @@
     </nav>
 </header>
 
+<div class="modal fade" id="mi-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirma</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="msg-confirm">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modal-btn-nao" class="btn btn-danger" data-dismiss="modal">Não</button>
+                <button type="button" id="modal-btn-sim" class="btn btn-success">Sim</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% block body %}
 
@@ -89,5 +107,6 @@
 ================================================== -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

@@ -35,6 +35,11 @@ header{
 	color: white;
 }
 
+.actions{
+	float: right;
+	transform: translateY(-35px);
+}
+
 footer{
 	background: #f4f4f4;
 	height: 90px;

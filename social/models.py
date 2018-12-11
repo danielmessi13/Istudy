@@ -14,7 +14,13 @@ class Usuario(models.Model):
     senha = models.CharField(max_length=50)
     tipo = models.CharField(max_length=10, choices=TIPOS)
     foto = models.ImageField(null=True)
-    amigos = models.ManyToManyField('Usuario',related_name='amigos_usuario')
+    amigos = models.ManyToManyField('Usuario', related_name='amigos_usuario')
+
+    def convidar(self, perfil_convidado):
+        Convite.objects.create(convidado=perfil_convidado, solicitante=self)
+
+    def timeline(self):
+        pass
 
     def __str__(self):
         return self.nome
@@ -28,7 +34,8 @@ class Anexo(models.Model):
 
     arquivo = models.FileField(upload_to='anexos')
     tipo = models.CharField(max_length=30, choices=TIPOS)
-    postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True,blank=True)
+    postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True,
+                                 blank=True)
 
 
 class Questao(models.Model):
@@ -69,21 +76,27 @@ class Mensagem(models.Model):
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=30)
+    descricao = models.TextField()
+    criador = models.ForeignKey(Usuario,related_name='criador',on_delete=models.CASCADE, default=1)
     usuarios = models.ManyToManyField(Usuario, related_name='grupo_usuario')
-    imagem = models.ImageField(default='group.png')
+    img = models.FileField(upload_to='grupos')
 
     def __str__(self):
         return self.titulo
+
 
 class Postagem(models.Model):
     texto = models.TextField()
     data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
-    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
-
+    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True,
+                                   blank=True)
 
     class Meta:
         ordering = ['-data']
+
+    def __str__(self):
+        return self.texto
 
 
 class Convite(models.Model):

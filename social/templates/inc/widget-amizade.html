@@ -1,0 +1,20 @@
+{% load static %}
+<div class="panel panel-default friends">
+    <div class="panel-heading">
+        <h3 class="panel-title">Meus Amigos</h3>
+    </div>
+    <div class="panel-body">
+        {% if usuario.amigos_usuario.count %}
+        <!--{% for amigo in usuario.amigos_usuario.all %}-->
+        <!--<ul>-->
+            <!--<li><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""></a>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--{% endfor %}-->
+        <div class="clearfix"></div>
+        <a class="btn btn-primary" href="#">Visualizar todos</a>
+        {% else %}
+        <h4 style="margin-top: 0px; text-align: center;">Você não tem amigos!</h4>
+        {% endif %}
+    </div>
+</div>

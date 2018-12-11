@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block body%}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Resultado da pesquisa por '{{pesquisa}}'</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            {% if resultado %}
+                                {% for amigo in resultado %}
+                                    <li class="list-group-item">{{amigo.nome}} <a href="{% url 'convidar' amigo.id %}" class="badge badge-primary badge-pill">Convidar</a></li>
+
+                                {% endfor%}
+                            {% else %}
+                            <h3>Não há resultados :(</h3>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                {%include 'inc/widget-amigo.html' %}
+                {%include 'inc/widget-grupo.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+

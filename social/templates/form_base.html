@@ -12,19 +12,6 @@
         {% endfor %}
     </div>
 
-    <div class="panel-body">
-        {% for field in form_model %}
-        <div class="form-group col-lg-12">
-            {{ field.errors }}
-            <label>{{ field.label_tag }}</label>
-            {{ field }}
-            {% if field.help_text %}
-            <span class="help-block">{{ field.errors }}</span>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-
     <div class="panel-footer">
         <button type="submit" class="btn btn-primary">{{btn_name}}</button>
     </div>

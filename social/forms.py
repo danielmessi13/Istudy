@@ -40,3 +40,14 @@ class BuscaGrupoForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'class': "form-control"})
         }
+
+
+class GrupoForm(forms.ModelForm):
+    class Meta:
+        model = Grupo
+        fields = ['titulo','descricao']
+
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': "form-control"}),
+            'descricao': forms.TextInput(attrs={'class': "form-control"}),
+        }
