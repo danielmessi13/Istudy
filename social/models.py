@@ -14,7 +14,7 @@ class Usuario(models.Model):
     senha = models.CharField(max_length=50)
     tipo = models.CharField(max_length=10, choices=TIPOS)
     foto = models.ImageField(null=True)
-    amigos = models.ManyToManyField('Usuario')
+    amigos = models.ManyToManyField('Usuario',related_name='amigos_usuario')
 
     def __str__(self):
         return self.nome
@@ -26,7 +26,7 @@ class Anexo(models.Model):
         ('P', 'pdf'),
     )
 
-    arquivo = models.FileField(upload_to='static')
+    arquivo = models.FileField(upload_to='anexos')
     tipo = models.CharField(max_length=30, choices=TIPOS)
     postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True,blank=True)
 
@@ -69,14 +69,21 @@ class Mensagem(models.Model):
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=30)
-    usuario = models.ManyToManyField(Usuario, related_name='grupo_usuario')
+    usuarios = models.ManyToManyField(Usuario, related_name='grupo_usuario')
+    imagem = models.ImageField(default='group.png')
 
+    def __str__(self):
+        return self.titulo
 
 class Postagem(models.Model):
     texto = models.TextField()
-    data = models.DateField(timezone.now)
+    data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
     questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
+
+
+    class Meta:
+        ordering = ['data']
 
 
 class Convite(models.Model):

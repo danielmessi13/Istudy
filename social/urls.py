@@ -1,5 +1,8 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import *
+
 
 urlpatterns = [
     path('', index, name='home'),
@@ -8,4 +11,8 @@ urlpatterns = [
     path('home', home, name='home_logado'),
     path('postar', postar, name='postar'),
     path('grupos', grupos, name='grupos'),
+    path('sair_grupo/<int:id>', sair_grupo, name='sair_grupo')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
