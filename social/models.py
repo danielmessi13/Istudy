@@ -31,7 +31,7 @@ class Anexo(models.Model):
 
     arquivo = models.FileField(upload_to='anexos')
     tipo = models.CharField(max_length=30, choices=TIPOS)
-    postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True, blank=True)
+    postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True,blank=True)
 
 
 class Questao(models.Model):
