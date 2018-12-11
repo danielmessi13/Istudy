@@ -66,20 +66,22 @@
                         </form>
                     </div>
                 </div>
-                {% if usuario.usuario_postagem %}
-                {% for postagem in usuario.usuario_postagem.all %}
+                {% if usuario.timeline %}
+                {% for postagem in usuario.timeline %}
                 <div class="box box-widget">
                     <div class="box-header with-border">
                         <div class="user-block">
                             <img class="img-circle" src="{% static 'img/user.png' %}" alt="">
                             <span class="username"><a href="#">{{postagem.usuario.nome}}</a></span>
                             <span class="description">{{postagem.data}}</span>
+                           {% if postagem.usuario.id  == request.session.usuario_logado.id %}
                             <span class="actions">
                                 <a class="text-danger action"
                                    param="{{postagem.id}}"
                                    data-msg="Deseja deletar a postagem '{{postagem.texto}}' ?"
                                    positive="remove"><i class="fa fa-trash"></i></a>
                             </span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="box-body">
@@ -96,7 +98,7 @@
                         {% endif %}
                         {% endfor %}
                         {% endif %}
-
+                       <br>
                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Compartilhar
                         </button>
                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Gostei
@@ -127,7 +129,7 @@
 
     function remove(post_id) {
         var url = "{% url 'postagem_deletar' 9999999 %}".replace(9999999, post_id);
-
+        top.location.href =  url
     }
 
 </script>

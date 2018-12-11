@@ -19,6 +19,7 @@ urlpatterns = [
     path('pesquisar/amigo', pesquisar_amigo, name='pesquisar_amigo'),
     path('grupos/add_grupo', add_grupo, name='add_grupo'),
     path('convidar/<int:id>', convidar, name='convidar'),
+    path('usuario/<int:id>/perfil', perfil, name='perfil'),
     path('amigos/convites', convites, name='convites'),
     path('amigos/convites/aceitar/<int:id>', aceitar, name='aceitar'),
 ]

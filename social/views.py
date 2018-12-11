@@ -73,11 +73,8 @@ def logout(request):
     return redirect('home')
 
 
-def perfil(request):
-    return render(request, 'perfil.html')
-
-
 def postar(request):
+    if not check_logado(request): return redirect('home')
     if request.method == "POST":
         form = PostagemForm(request.POST)
         if form.is_valid():
@@ -117,7 +114,7 @@ def postar_editar(request, id):
 
 def postar_deletar(request, id):
     postagem = Postagem.objects.get(id=id)
-    postagem.delete()
+    print(postagem.delete())
     return redirect('home_logado')
 
 
@@ -132,6 +129,25 @@ def pesquisar_amigo(request):
         "pesquisa": pesquisa
     }
     return render(request, 'pesquisa.html', context)
+
+
+def perfil(request, id):
+    if not check_logado(request): return redirect('home')
+    usuario = get_object_or_404(Usuario, id=id)
+    if request.method == "POST":
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            reload_user(request,id)
+    else:
+        form = UsuarioForm(instance=usuario)
+    context = {
+        "usuaerio": usuario_logado(request),
+        "perfil": usuario,
+        "form": form,
+        "btn_name": "Salvar Perfil"
+    }
+    return render(request, 'perfil.html', context)
 
 
 def grupos(request):
@@ -180,32 +196,37 @@ def check_logado(request):
     return False
 
 
+def reload_user(request, id):
+    usuario = Usuario.objects.get(id=id)
+    request.session["usuario_logado"] = {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "tipo": usuario.tipo
+    }
+
+
 def usuario_logado(request):
     usuario = request.session.get('usuario_logado')
     return Usuario.objects.get(id=usuario["id"])
 
 
-def add_grupo(request,id=0):
-    grupo = None
-    if id:
-        grupo = Grupo.objects.get(id=id)
+def add_grupo(request):
     if request.method == 'POST':
         form = GrupoForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.criador = usuario_logado(request)
+            form.save(commit=False)
             form.save()
             return redirect('grupos')
 
     else:
-        form = GrupoForm(instance=grupo)
+        form = GrupoForm()
 
     context = {
         "form": form,
         "btn_name": "Criar"
 
     }
-    grupo.delete()
     return render(request, 'grupo.html', context)
 
 
@@ -234,10 +255,3 @@ def aceitar(request, id):
     convite = Convite.objects.get(id=id)
     convite.aceitar()
     return redirect('home_logado')
-
-def excluir_grupo(request,id):
-    print("entrou")
-    grupo = Grupo.objects.get(id=id)
-    grupo.delete()
-    return redirect('grupos')
-
