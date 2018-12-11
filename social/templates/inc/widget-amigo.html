@@ -1,0 +1,21 @@
+{% load static %}
+<div class="panel panel-default friends">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Meus Amigos</h3>
+    </div>
+    <div class="panel-body">
+        <form action="{% url 'pesquisar_amigo' %}">
+            <input name="q" class="form-control" placeholder="Encontrar Amigo">
+        </form>
+        <div class="clearfix"></div>
+        {% if usuario.amigos_usuario.count %}
+        {% for amigo in usuario.amigos_usuario.all %}
+        <ul>
+            <li><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""></a>
+            </li>
+        </ul>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>

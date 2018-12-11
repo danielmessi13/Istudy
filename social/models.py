@@ -16,6 +16,9 @@ class Usuario(models.Model):
     foto = models.ImageField(null=True)
     amigos = models.ManyToManyField('Usuario',related_name='amigos_usuario')
 
+    def timeline(self):
+        pass
+
     def __str__(self):
         return self.nome
 
@@ -80,10 +83,11 @@ class Postagem(models.Model):
     data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
     questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True, blank=True)
-
-
     class Meta:
-        ordering = ['data']
+        ordering = ['-data']
+
+    def __str__(self):
+        return  self.texto
 
 
 class Convite(models.Model):

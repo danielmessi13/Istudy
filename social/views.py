@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from .forms import *
@@ -32,6 +32,7 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+
 def login(request):
     collection = Usuario.objects.filter(email=request.POST['email'], senha=request.POST['senha'])
     if collection:
@@ -50,7 +51,8 @@ def logout(request):
     request.session["usuario_logado"] = None
     return redirect('home')
 
-
+def perfil(request):
+    return render(request, 'perfil.html')
 
 def postar(request):
     if request.method == "POST":
@@ -76,6 +78,32 @@ def postar(request):
             print(form.errors)
     return redirect('home_logado')
 
+def postar_editar(request, id):
+    postagem = get_object_or_404(Postagem, id=id)
+    if request.method == "POST":
+        form = PostagemForm(request.POST, instance=postagem)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.usuario = usuario_logado(request)
+            model_instance.save()
+        else:
+            print(form.errors)
+    return redirect('home_logado')
+
+def postar_deletar(request, id):
+    postagem = Postagem.objects.get(id=id)
+    postagem.delete()
+    return redirect('home_logado')
+
+def pesquisar_amigo(request):
+    pesquisa =  request.GET['q']
+    resultado  = Usuario.objects.filter(nome__contains = pesquisa).exclude(nome = "Joao")
+    context = {
+        "usuario": usuario_logado(request),
+        "resultado": resultado,
+        "pesquisa": pesquisa
+    }
+    return render(request, 'pesquisa.html', context )
 
 def grupos(request):
     if request.method == "POST":

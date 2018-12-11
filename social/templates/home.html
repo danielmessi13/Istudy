@@ -8,12 +8,12 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Postar</h3>
+                        <h3 class="panel-title">Publicações</h3>
                     </div>
                     <div class="panel-body">
                         <form action="{% url 'postar' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <textarea name="texto" class="form-control input-lg p-text-area" rows="2"
+                            <textarea name="texto" required class="form-control input-lg p-text-area" rows="2"
                                       placeholder="O que você tem em mente hoje?"></textarea>
                             <input name="tipo" type="hidden" id="tipo_anexo" value="False">
                             <div class="modal fade" id="anexo" tabindex="-1" role="dialog"
@@ -74,6 +74,12 @@
                             <img class="img-circle" src="{% static 'img/user.png' %}" alt="">
                             <span class="username"><a href="#">{{postagem.usuario.nome}}</a></span>
                             <span class="description">{{postagem.data}}</span>
+                            <span class="actions">
+                                <a class="text-danger action"
+                                   param="{{postagem.id}}"
+                                   data-msg="Deseja deletar a postagem '{{postagem.texto}}' ?"
+                                   positive="remove"><i class="fa fa-trash"></i></a>
+                            </span>
                         </div>
                     </div>
                     <div class="box-body">
@@ -102,49 +108,8 @@
                 {% endif %}
             </div>
             <div class="col-md-4">
-                <div class="panel panel-default friends">
-
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Meus Amigos</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% if usuario.amigos_usuario.count %}
-                        {% for amigo in usuario.amigos_usuario.all %}
-                        <ul>
-                            <li><a href="" class="thumbnail"><img src="{% static 'img/user.png' %}" alt=""></a>
-                            </li>
-                        </ul>
-                        {% endfor %}
-                        <div class="clearfix"></div>
-                        <a class="btn btn-primary" href="#">Visualizar todos</a>
-                        {% else %}
-                        <h3 style="margin-top: 0px">Você não tem amigos!</h3>
-                        <a href="#" class="btn btn-primary">Procurar amigos</a>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="panel panel-default groups">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Grupos</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% if usuario.grupo_usuario.count %}
-                        {% for grupo in usuario.grupo_usuario.all %}
-                        <div class="group-item">
-                            <img src="{% static 'img/group.png' %}" alt="">
-                            <h4><a href="#" class="">{{ grupo.titulo }} </a></h4>
-                            <p>Grupo de atividades</p>
-                        </div>
-
-                        {% endfor %}
-                        <div class="clearfix"></div>
-                        <a href="{% url 'grupos' %}" class="btn btn-primary">Visualizar todos</a>
-                        {% else %}
-                        <h3 style="margin-top: 0px">Você não está em grupos!</h3>
-                        <a href="#" class="btn btn-primary">Procurar grupos</a>
-                        {% endif %}
-                    </div>
-                </div>
+                {%include 'inc/widget-amigo.html' %}
+                {%include 'inc/widget-grupo.html' %}
             </div>
         </div>
     </div>
@@ -155,12 +120,11 @@
         $('#tipo_anexo').val(tipo)
     }
 
+    function remove(post_id) {
+        var url = "{% url 'postagem_deletar' 9999999 %}".replace(9999999, post_id);
+        top.location.href = url
 
-
-
-
-
-
+    }
 </script>
 {% endblock %}
 
