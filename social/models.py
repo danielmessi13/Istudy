@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from itertools import chain
 
 
 # Create your models here.
@@ -20,7 +21,11 @@ class Usuario(models.Model):
         Convite.objects.create(convidado=perfil_convidado, solicitante=self)
 
     def timeline(self):
-        pass
+        posts  = list(self.usuario_postagem.filter())
+        if self.amigos_usuario.all() :
+            for amigo in self.amigos_usuario.all():
+                posts += list(amigo.usuario_postagem.filter())
+        return sorted(chain(posts),key=lambda instance: instance.data, reverse=True)
 
     def __str__(self):
         return self.nome

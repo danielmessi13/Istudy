@@ -138,7 +138,7 @@ def perfil(request, id):
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            reload_user(request,id)
+            reload_user(request, id)
     else:
         form = UsuarioForm(instance=usuario)
     context = {
@@ -211,16 +211,21 @@ def usuario_logado(request):
     return Usuario.objects.get(id=usuario["id"])
 
 
-def add_grupo(request):
+def add_grupo(request, id=0):
+    grupo = None
+    if id:
+        grupo = Grupo.objects.get(id=id)
+
     if request.method == 'POST':
         form = GrupoForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
-            form.save()
+            instance = form.save(commit=False)
+            instance.criador = usuario_logado(request)
+            instance.save()
             return redirect('grupos')
 
     else:
-        form = GrupoForm()
+        form = GrupoForm(instance=grupo)
 
     context = {
         "form": form,
@@ -255,3 +260,10 @@ def aceitar(request, id):
     convite = Convite.objects.get(id=id)
     convite.aceitar()
     return redirect('home_logado')
+
+
+def excluir_grupo(request, id):
+    print("entrou")
+    grupo = Grupo.objects.get(id=id)
+    grupo.delete()
+    return redirect('grupos')
