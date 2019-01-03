@@ -1,0 +1,29 @@
+{% extends 'base_usuario.html' %}
+{% block body %}
+<form action="{% url 'cadastrar' %}" method="post" class="form-signin">
+    {% csrf_token %}
+    <h2 class="form-signin-heading">Crie seu usuário</h2>
+
+    <input id="id_nome" name="nome" type="tex" placeholder="Nome *" class="form-control" required>
+    <input id="id_email" name="email" type="email" placeholder="Email *" class="form-control" required autofocus>
+    <input id="id_senha" name="senha" type="password" placeholder="Senha *" class="form-control" required>
+    <hr/>
+    <input id="id_fone" name="telefone" type="tel" placeholder="Telefone *" class="form-control" required>
+    <input id="id_empresa" name="nome_empresa" type="text" placeholder="Empresa *" class="form-control" required>
+    <hr/>
+    <button type="submit" value="Login" class="btn btn-primary btn-block">Cadastrar</button>
+
+
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <button type="button" class="close"
+                data-dismiss="alert" aria-hidden="true">
+        </button>
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+
+    <a href="{% url 'login' %}">Já possuo uma conta</a>
+
+</form>
+{% endblock %}

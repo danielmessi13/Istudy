@@ -1,12 +1,12 @@
 header{
-    background-image: linear-gradient(#26A69A, #27a498 10%, #227f73);
+    background-image: linear-gradient(#4B79A1, #283E51);
 	color:#fff;
 	min-height: 100px;
 	padding-top: 25px;
 }
 
 .panel-heading {
-	background-image: linear-gradient(#26A69A, #27a498 10%, #227f73);
+	background-image: linear-gradient(#4B79A1, #283E51);
 	color: #fff !important;
 }
 
@@ -26,7 +26,7 @@ header{
 	background: #227f73 !important;
 }
 .dropdown-menu{
-	background-image: linear-gradient(#26A69A, #27a498 10%, #227f73);
+	background-image: linear-gradient(#4B79A1, #283E51);
 	color: #fff !important;
 }
 

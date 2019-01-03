@@ -1,80 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from .forms import *
 
 
 # Create your views here.
-def index(request):
-    if check_logado(request): return redirect('home_logado')
-    if request.method == "POST":
-        form = CadastroForm(request.POST)
-        if form.is_valid():
-            model_instance = form.save(commit=False)
-            model_instance.save()
-            messages.success(request, 'Conta criada com sucesso')
-            return redirect('home')
-    else:
-        form = CadastroForm()
 
-    context = {
-        "form": form,
-        "btn_name": "Cadastrar"
-    }
-    return render(request, 'index.html', context)
+def index(request):
+
+    return render(request, 'a.html')
 
 
 def home(request):
-    if check_logado(request):
-        if request.method == "POST":
-            form = BuscaGrupoForm(request.POST)
-            if form.is_valid():
-                if request.POST['titulo']:
-                    print('entrou')
-                    context = {
-                        "busca_sair": usuario_logado(request).grupo_usuario.all().filter(titulo=request.POST['titulo']),
-                        "busca": True,
-                        "busca_entrar": Grupo.objects.all().exclude(usuarios=usuario_logado(request)),
-                    }
-                    return render(request, 'grupos.html', context)
-            else:
-                print(form.errors)
+    return render(request,'a.html')
 
-        form = BuscaGrupoForm()
-
-        context = {
-            "usuario": usuario_logado(request),
-            "form": form,
-            "btn_name": "Buscar",
-        }
-
-        return render(request, 'home.html', context)
-    else:
-        return index(request)
-
-
-def login(request):
-    collection = Usuario.objects.filter(email=request.POST['email'], senha=request.POST['senha'])
-    if collection:
-        usuario = collection[0]
-        request.session["usuario_logado"] = {
-            "id": usuario.id,
-            "nome": usuario.nome,
-            "email": usuario.email
-        }
-        return redirect('home_logado')
-
-    return redirect('home')
-
-
-def logout(request):
-    request.session["usuario_logado"] = None
-    return redirect('home')
-
-
+@login_required
 def postar(request):
-    if not check_logado(request): return redirect('home')
     if request.method == "POST":
         form = PostagemForm(request.POST)
         if form.is_valid():
@@ -131,109 +74,8 @@ def pesquisar_amigo(request):
     return render(request, 'pesquisa.html', context)
 
 
-def perfil(request, id):
-    if not check_logado(request): return redirect('home')
-    usuario = get_object_or_404(Usuario, id=id)
-    if request.method == "POST":
-        form = UsuarioForm(request.POST, instance=usuario)
-        if form.is_valid():
-            form.save()
-            reload_user(request, id)
-    else:
-        form = UsuarioForm(instance=usuario)
-    context = {
-        "usuaerio": usuario_logado(request),
-        "perfil": usuario,
-        "form": form,
-        "btn_name": "Salvar Perfil"
-    }
-    return render(request, 'perfil.html', context)
-
-
-def grupos(request):
-    if request.method == "POST":
-        form = BuscaGrupoForm(request.POST)
-        if form.is_valid():
-            if request.POST['titulo']:
-                context = {
-                    "busca_sair": usuario_logado(request).grupo_usuario.all().filter(titulo=request.POST['titulo']),
-                    "busca": True,
-                    "busca_entrar": Grupo.objects.all().exclude(usuarios=usuario_logado(request)).filter(
-                        titulo=request.POST['titulo']),
-                }
-                return render(request, 'grupos.html', context)
-        else:
-            print(form.errors)
-
-    form = BuscaGrupoForm()
-
-    context = {
-        "form": form,
-        "btn_name": "Buscar",
-        "usuario": usuario_logado(request),
-        "grupos": Grupo.objects.all().exclude(usuarios=usuario_logado(request)).exclude(
-            criador=usuario_logado(request)),
-    }
-
-    return render(request, 'grupos.html', context)
-
-
-def sair_grupo(request, id):
-    usuario = usuario_logado(request)
-    usuario.grupo_usuario.remove(Grupo.objects.get(id=id))
-    return redirect('grupos')
-
-
-def entrar_grupo(request, id):
-    usuario = usuario_logado(request)
-    usuario.grupo_usuario.add(Grupo.objects.get(id=id))
-    return redirect('grupos')
-
-
-def check_logado(request):
-    if request.session.get('usuario_logado'):
-        return True
-    return False
-
-
-def reload_user(request, id):
-    usuario = Usuario.objects.get(id=id)
-    request.session["usuario_logado"] = {
-        "id": usuario.id,
-        "nome": usuario.nome,
-        "email": usuario.email,
-        "tipo": usuario.tipo
-    }
-
-
 def usuario_logado(request):
-    usuario = request.session.get('usuario_logado')
-    return Usuario.objects.get(id=usuario["id"])
-
-
-def add_grupo(request, id=0):
-    grupo = None
-    if id:
-        grupo = Grupo.objects.get(id=id)
-
-    if request.method == 'POST':
-        form = GrupoForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.criador = usuario_logado(request)
-            instance.save()
-            return redirect('grupos')
-
-    else:
-        form = GrupoForm(instance=grupo)
-
-    context = {
-        "form": form,
-        "btn_name": "Criar"
-
-    }
-    return render(request, 'grupo.html', context)
-
+    return request.user.perfil
 
 def convidar(request, id):
     perfil_a_convidar = Usuario.objects.get(id=id)
@@ -261,9 +103,3 @@ def aceitar(request, id):
     convite.aceitar()
     return redirect('home_logado')
 
-
-def excluir_grupo(request, id):
-    print("entrou")
-    grupo = Grupo.objects.get(id=id)
-    grupo.delete()
-    return redirect('grupos')

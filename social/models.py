@@ -1,21 +1,21 @@
 from django.db import models
 from django.utils import timezone
 from itertools import chain
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Usuario(models.Model):
-    TIPOS = (
-        ('A', 'Aluno'),
-        ('M', 'Mentor'),
-    )
 
-    nome = models.CharField(max_length=30)
-    email = models.CharField(max_length=40)
-    senha = models.CharField(max_length=50)
-    tipo = models.CharField(max_length=10, choices=TIPOS)
+    telefone = models.CharField(max_length=20, null=False)
+    nome_empresa = models.CharField(max_length=255, null=False)
     foto = models.ImageField(null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     amigos = models.ManyToManyField('Usuario', related_name='amigos_usuario')
+
+    @property
+    def email(self):
+        return self.usuario.email
 
     def convidar(self, perfil_convidado):
         Convite.objects.create(convidado=perfil_convidado, solicitante=self)
@@ -28,7 +28,7 @@ class Usuario(models.Model):
         return sorted(chain(posts),key=lambda instance: instance.data, reverse=True)
 
     def __str__(self):
-        return self.nome
+        return self.user.username
 
 
 class Anexo(models.Model):
@@ -41,17 +41,6 @@ class Anexo(models.Model):
     tipo = models.CharField(max_length=30, choices=TIPOS)
     postagem = models.ForeignKey('Postagem', related_name='anexo_postagem', on_delete=models.CASCADE, null=True,
                                  blank=True)
-
-
-class Questao(models.Model):
-    texto_questao = models.TextField()
-    data_publicacao = models.DateField(default=timezone.now)
-
-
-class Alternativa(models.Model):
-    questao = models.ForeignKey(Questao, related_name='alternativas', on_delete=models.CASCADE)
-    texto_alternativa = models.CharField(max_length=30)
-    correta = models.BooleanField(default=False)
 
 
 class Comentario(models.Model):
@@ -79,23 +68,11 @@ class Mensagem(models.Model):
     lida = models.BooleanField(default=False)
 
 
-class Grupo(models.Model):
-    titulo = models.CharField(max_length=30)
-    descricao = models.TextField()
-    criador = models.ForeignKey(Usuario,related_name='criador',on_delete=models.CASCADE, default=1)
-    usuarios = models.ManyToManyField(Usuario, related_name='grupo_usuario')
-    img = models.FileField(upload_to='grupos')
-
-    def __str__(self):
-        return self.titulo
-
 
 class Postagem(models.Model):
     texto = models.TextField()
     data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(Usuario, related_name='usuario_postagem', on_delete=models.CASCADE)
-    questao = models.OneToOneField(Questao, related_name='questao_postagem', on_delete=models.CASCADE, null=True,
-                                   blank=True)
 
     class Meta:
         ordering = ['-data']
